@@ -11,20 +11,18 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Map;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = "keylist", bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Keylist.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
-    private static final Logger LOGGER = LogManager.getLogger();
-
     @SubscribeEvent(priority = EventPriority.LOWEST)
     static void setup(FMLLoadCompleteEvent e) {
         e.enqueueWork(() -> {
             if (ClientConfig.PRINT_KEYS.get()) {
-                LOGGER.debug("Keys:");
-                KeyMapping.ALL.keySet().stream().sorted().forEach(LOGGER::debug);
+                Keylist.LOGGER.info("Keys:");
+                KeyMapping.ALL.keySet().stream().sorted().forEach(Keylist.LOGGER::info);
             }
             if (ClientConfig.PRINT_CATEGORIES.get()) {
-                LOGGER.debug("Categories:");
-                KeyMapping.CATEGORY_SORT_ORDER.keySet().stream().sorted().forEach(LOGGER::debug);
+                Keylist.LOGGER.info("Categories:");
+                KeyMapping.CATEGORY_SORT_ORDER.keySet().stream().sorted().forEach(Keylist.LOGGER::info);
             }
             for (Map.Entry<KeyMapping, String> key : ClientConfig.getKeysToChange().entrySet()) {
                 key.getKey().category = key.getValue();
