@@ -13,9 +13,6 @@ buildscript {
     }
 }
 
-plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
-}
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'idea'
@@ -52,6 +49,8 @@ configurations {
     implementation.extendsFrom library
     implementation.extendsFrom shade
 }
+
+jarJar.enable()
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.mc_version}-${project.forge_version}"
@@ -147,20 +146,6 @@ jar {
     }
 }
 jar.finalizedBy('reobfJar')
-
-shadowJar {
-    archiveClassifier = ''
-    configurations = [project.configurations.shade]
-    relocate 'com.llamalad7.mixinextras', "${project.group}.mixinextras"
-    mergeServiceFiles()
-    finalizedBy 'reobfShadowJar'
-}
-
-assemble.dependsOn shadowJar
-
-reobf {
-    shadowJar {}
-}
 
 mixin {
     add sourceSets.main, "${project.mod_id}.refmap.json"
